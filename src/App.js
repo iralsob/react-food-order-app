@@ -9,7 +9,7 @@ import MealsSummary from "./components/Meal/MealsSummary";
 
 function App() {
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const onClickCloseButtonHandler = () => {
+  const hideCartHandler = () => {
     setIsCartOpen(false);
   };
   const showCartHandler = () => {
@@ -17,9 +17,9 @@ function App() {
   }
   return (
     <Fragment>
-     <Header showCart={showCartHandler}></Header>
+     <Header onShowCart={showCartHandler}></Header>
       <main>
-        {isCartOpen?<Cart onClickCloseButton={onClickCloseButtonHandler}/>:''}
+        {isCartOpen?<Cart hideCart={hideCartHandler}/>:''}
         <MealsSummary />
         <AvailableMeals />
       </main>
