@@ -8,13 +8,20 @@ import Modal from "../UI/Modal";
 const Cart = (props) => {
   const cartCtx = useContext(CartContext);
 
-  const totalAmountValue = `$${cartCtx.totalAmount}`;
+  const totalAmountValue = `$${cartCtx.totalAmount.toFixed(2)}`;
   const hasItems = cartCtx.items.length > 0;
 
   const onAddItemHandler = (item) => {
-    cartCtx.addItem(item);
+    cartCtx.addItem({
+      name:item.name,
+      amount:1,
+      price:item.price,
+      id:item.id
+    });
   };
-  const onRemoveItemHandler = (id) => {};
+  const onRemoveItemHandler = (id) => {
+    cartCtx.removeItem(id);
+  };
 
   const cartItems = cartCtx.items.map((item) => (
     <CartItem
@@ -23,8 +30,8 @@ const Cart = (props) => {
       name={item.name}
       amount={item.amount}
       price={item.price}
-      onAdd={onAddItemHandler}
-      onRemove={onRemoveItemHandler}
+      onAdd={onAddItemHandler.bind(null, item)}
+      onRemove={onRemoveItemHandler.bind(null, item.id)}
     />
   ));
   return (
