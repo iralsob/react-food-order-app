@@ -8,7 +8,6 @@ const MealItem = (props) => {
   const cartCtx = useContext(CartContext);
 
   const addOnCartHandler = (amount) => {
-    console.log(amount);
     cartCtx.addItem({
       name:props.name,
       amount:amount,

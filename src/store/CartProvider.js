@@ -5,10 +5,29 @@ const defaultCartState = { items: [], totalAmount: 0 };
 
 const reducerCart = (prevState, action) => {
   if (action.type === "ADD") {
-    const updatedItems = prevState.items.concat(action.item);
     const updatedTotalAmount =
       prevState.totalAmount + action.item.amount * action.item.price;
-    return { items: updatedItems, amount: updatedTotalAmount };
+
+    let updatedItems;
+    const itemExists = prevState.items.some(
+      (item) => item.id === action.item.id
+    );
+    if (itemExists) {
+        updatedItems = prevState.items.map(item => {
+            if (item.id === action.item.id) {
+                item.amount += action.item.amount;
+            }
+            return item;
+        });
+    } else {
+      updatedItems = prevState.items.concat(action.item);
+    }
+
+    return { items: updatedItems, totalAmount: updatedTotalAmount };
+  }
+
+  if (action.type === "REMOVE") {
+    console.log(action.id);
   }
   return defaultCartState;
 };
@@ -18,7 +37,9 @@ const CartProvider = (props) => {
   const addItemToCartHandler = (item) => {
     dispatchCart({ type: "ADD", item: item });
   };
-  const removeItemFromCartHandler = (id) => {};
+  const removeItemFromCartHandler = (id) => {
+    dispatchCart({ type: "REMOVE", id: id });
+  };
 
   const CartCtx = {
     items: cartState.items,
